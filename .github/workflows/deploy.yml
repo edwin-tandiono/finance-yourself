@@ -42,8 +42,9 @@ jobs:
         run: npm ci
 
       - name: Save environment variables
-        run:
-          echo "VITE_TEST_ENV=${{ env.VITE_TEST_ENV }}" > .env
+        run: |
+          touch .env
+          echo VITE_TEST_ENV=${{ env.VITE_TEST_ENV }} >> .env
 
       - name: Build
         run: npm run build
