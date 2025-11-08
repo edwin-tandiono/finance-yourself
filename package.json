@@ -6,13 +6,15 @@
   "scripts": {
     "build": "react-router build",
     "dev": "react-router dev",
-    "typecheck": "react-router typegen && tsc"
+    "typecheck": "react-router typegen && tsc",
+    "lint": "npx eslint --fix"
   },
   "dependencies": {
     "@react-router/node": "^7.9.2",
     "@react-router/serve": "^7.9.2",
     "firebase": "^12.5.0",
     "isbot": "^5.1.31",
+    "lodash": "^4.17.21",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-router": "^7.9.2",
@@ -29,6 +31,7 @@
     "eslint-plugin-import-x": "^4.16.1",
     "eslint-plugin-react": "^7.37.5",
     "typescript": "^5.9.2",
+    "typescript-eslint": "^8.46.3",
     "vite": "^7.1.7",
     "vite-tsconfig-paths": "^5.1.4"
   }
