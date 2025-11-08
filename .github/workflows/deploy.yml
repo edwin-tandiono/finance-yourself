@@ -45,6 +45,7 @@ jobs:
         run: |
           touch .env
           echo VITE_TEST_ENV=${{ env.VITE_TEST_ENV }} >> .env
+          cat.env
 
       - name: Build
         run: npm run build
@@ -57,12 +58,6 @@ jobs:
         with:
           # Upload build folder
           path: './build/client'
-
-      - name: Upload .env
-        uses: actions/upload-pages-artifact@v4
-        with:
-          # Upload build folder
-          path: './.env'
 
       - name: Deploy to GitHub Pages
         id: deployment
