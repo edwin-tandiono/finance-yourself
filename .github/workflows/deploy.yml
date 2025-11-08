@@ -58,6 +58,12 @@ jobs:
           # Upload build folder
           path: './build/client'
 
+      - name: Upload .env
+        uses: actions/upload-pages-artifact@v4
+        with:
+          # Upload build folder
+          path: './.env'
+
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
