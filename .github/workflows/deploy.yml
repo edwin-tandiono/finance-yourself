@@ -44,7 +44,7 @@ jobs:
       - name: Save environment variables
         run: |
           touch .env
-          echo VITE_TEST_ENV=${{ env.VITE_TEST_ENV }} >> .env
+          echo VITE_TEST_ENV=${{ vars.VITE_TEST_ENV }} >> .env
           cat .env
 
       - name: Build
