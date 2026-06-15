@@ -8,6 +8,7 @@ import {
   getExpenses,
   createExpense,
   updateExpense,
+  deleteExpense,
 } from 'services/firebase';
 import { hideAppLoader, showAppLoader } from 'utils/loader';
 
@@ -36,8 +37,10 @@ export default function HomePage() {
   };
 
   const handleFetchList = () => {
-    showAppLoader();
-    setExpenses([]);    
+    if (expenses.length === 0) {
+      showAppLoader();
+    }
+
     setCurrentOpenExpense(undefined);
     setExpenseFormOpen(false);
     setErrorMessage('');
@@ -66,6 +69,16 @@ export default function HomePage() {
     }
   };
 
+  const handleDelete = (expense: Expense) => {
+    showAppLoader();
+    setErrorMessage('');
+
+    deleteExpense(expense.id)
+      .then(handleFetchList)
+      .catch(catchError)
+      .finally(hideAppLoader);
+  };
+
   // On mount
   useEffect(() => {
     listenOnAuthStateChanged({
@@ -83,7 +96,13 @@ export default function HomePage() {
 
   return (
     <div>
-      <Navbar month={month} onChangeMonth={setMonth} />
+      <Navbar
+        month={month}
+        onChangeMonth={(newMonth) => {
+          setMonth(newMonth);
+          setExpenses([]);
+        }}
+      />
 
       <ErrorMessage>{errorMessage}</ErrorMessage>
 
@@ -100,6 +119,7 @@ export default function HomePage() {
           setExpenseFormOpen(false);
           setCurrentOpenExpense(undefined);
         }}
+        onDelete={handleDelete}
         onSubmit={handleUpsert}
         open={expenseFormOpen}
         prefill={currentOpenExpense}

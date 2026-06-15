@@ -23,11 +23,13 @@ const CATEGORY_OPTIONS = [
 
 export default function ExpenseForm ({
   onClose,
+  onDelete,
   onSubmit,
   open,
   prefill,
 }: {
   onClose: () => void,
+  onDelete: (expense: Expense) => void,
   onSubmit: (expense: Expense | CreateExpensePayload) => void,
   open: boolean,
   prefill?: Expense,
@@ -220,11 +222,25 @@ export default function ExpenseForm ({
   return (
     <div className={styles['expense-form']}>
       <form onSubmit={handleSubmit}>
-        <h1>
+        <div className={styles['expense-form__header']}>
+          <h1>
+            {prefill
+              ? `[${format({ date: prefill.date, format: 'D MMM YYYY' })}] ${prefill.description || prefill.category}`
+              : 'Add Expense'}
+          </h1>
+
           {prefill
-            ? `[${format({ date: prefill.date, format: 'D MMM YYYY' })}] ${prefill.description || prefill.category}`
-            : 'Add Expense'}
-        </h1>
+            && (
+              <button
+                className="text-button"
+                onClick={() => onDelete(prefill)}
+                type="button"
+              >
+                &#9003;
+              </button>
+            )}
+        </div>
+
         <label>
           <span>Amount</span>
           <input
@@ -234,7 +250,9 @@ export default function ExpenseForm ({
             type="number"
             value={form.amount}
           />
+        </label>
 
+        <label>
           <span>Category</span>
           <input
             name="category"
@@ -259,7 +277,9 @@ export default function ExpenseForm ({
               </button>
             ))}
           </div>
+        </label>
 
+        <label>
           <span>Description</span>
           <textarea
             name="description"

@@ -9,6 +9,7 @@ import {
 import {
   addDoc,
   collection,
+  deleteDoc,
   getFirestore,
   getDocs,
   orderBy,
@@ -115,4 +116,10 @@ export const updateExpense = async (id: string, expense: Omit<Expense, 'id'>): P
   const expenseDoc = doc(db, 'expenses', id);
 
   await updateDoc(expenseDoc, expense);
+};
+
+export const deleteExpense = async (id: string): Promise<void> => {
+  const expenseDoc = doc(db, 'expenses', id);
+
+  await deleteDoc(expenseDoc);
 };
