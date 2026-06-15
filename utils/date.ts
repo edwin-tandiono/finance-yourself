@@ -15,8 +15,7 @@ export const validateYear = (year?: number) => {
 };
 
 export const format = (args?: { date?: Date, format?: string }): string => {
-  const inputDate = args?.date ?? new Date();
-
+  const date = args?.date ?? new Date();
   const format = args?.format ?? 'YYYY-MM-DD';
 
   const monthsShort = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
@@ -25,16 +24,29 @@ export const format = (args?: { date?: Date, format?: string }): string => {
   const pad = (n: number, width = 2) => String(n).padStart(width, '0');
 
   const replacements: Record<string, string> = {
-    'YYYY': String(inputDate.getFullYear()),
-    'yyyy': String(inputDate.getFullYear()),
-    'YY': String(inputDate.getFullYear()).slice(-2),
-    'MMMM': monthsLong[inputDate.getMonth()],
-    'MMM': monthsShort[inputDate.getMonth()],
-    'MM': pad(inputDate.getMonth() + 1),
-    'M': String(inputDate.getMonth() + 1),
-    'DD': pad(inputDate.getDate()),
-    'D': String(inputDate.getDate()),
+    'YYYY': String(date.getFullYear()),
+    'yyyy': String(date.getFullYear()),
+    'YY': String(date.getFullYear()).slice(-2),
+    'MMMM': monthsLong[date.getMonth()],
+    'MMM': monthsShort[date.getMonth()],
+    'MM': pad(date.getMonth() + 1),
+    'M': String(date.getMonth() + 1),
+    'DD': pad(date.getDate()),
+    'D': String(date.getDate()),
   };
 
   return format.replace(/YYYY|yyyy|YY|MMMM|MMM|MM|M|DD|D|HH|hh|mm|ss/g, (match) => replacements[match] ?? match);
+};
+
+export const groupByDate = <T>({ items, getDate }: { items: T[]; getDate: (item: T) => Date }): Record<string, T[]> => {
+  return items.reduce<Record<string, T[]>>((acc, item) => {
+    const d = getDate(item) ?? new Date();
+    const key = format({ date: d, format: 'YYYY-MM-DD' });
+
+    if (!acc[key]) acc[key] = [];
+
+    acc[key].push(item);
+
+    return acc;
+  }, {});
 };

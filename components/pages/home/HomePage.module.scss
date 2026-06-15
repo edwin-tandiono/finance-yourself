@@ -3,11 +3,7 @@
 
 .navbar {
   background: variables.$accent;
-  height: 56px;
-
-  @include mixins.desktop {
-    height: 50px;
-  }
+  height: variables.$navbar-height;
 
   &__content {  
     align-items: center;
@@ -24,6 +20,72 @@
     button {
       cursor: pointer;
       width: 4rem;
+    }
+  }
+}
+
+.expense-list {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - variables.$navbar-height);
+
+  @include mixins.limit-desktop;
+
+  &__list {
+    flex: 1;
+    overflow: auto;
+    padding-bottom: 10px;
+
+   &__date {
+      &__header {
+        background: lightgray;
+        padding: 5px 10px;
+      }
+
+      &__data {
+        &__expense {
+          background: none;
+          border: 0;
+          border-bottom: 1px solid lightgray;
+          display: flex;
+          gap: 10px;
+          justify-content: space-between;
+          padding: 5px 10px;
+          width: 100%;
+
+          &:hover {
+            background: #{variables.$accent}22;
+            cursor: pointer;
+          }
+
+          &__description {
+            font-size: 1.1rem;
+            text-align: left;
+            word-break: break-word;
+          }
+
+          &__amount {
+            align-content: center;
+            font-size: 1.4rem;
+            font-weight: 500;
+            min-width: 30%;
+            text-align: right;
+          }
+        }
+      }
+    }
+  }
+
+  &__summary {
+    align-items: center;
+    border-top: 2px solid lightgray;
+    display: flex;
+    font-size: 1.2rem;
+    justify-content: space-between;
+    padding: 10px;
+
+    b {
+      font-size: 1.5rem;
     }
   }
 }

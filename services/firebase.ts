@@ -7,9 +7,10 @@ import {
   onAuthStateChanged,
 } from 'firebase/auth';
 import {
-  getFirestore,
   collection,
+  getFirestore,
   getDocs,
+  orderBy,
   query,
   where,
 } from 'firebase/firestore';
@@ -20,6 +21,7 @@ import {
 } from 'utils/date';
 
 import type { OAuthCredential } from 'firebase/auth';
+import type { Expense } from 'types/models/expense';
 
 const CONFIG = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -66,7 +68,7 @@ export const signIn = (): Promise<OAuthCredential | null> => {
     });
 };
 
-export const getExpenses = async (date: Date = new Date()) => {
+export const getExpenses = async (date: Date = new Date()): Promise<Expense[]> => {
   const expensesCol = collection(db, 'expenses');
 
   const month = validateMonth(date.getMonth() + 1);
@@ -75,11 +77,25 @@ export const getExpenses = async (date: Date = new Date()) => {
   const start = new Date(year, month - 1, 1, 0, 0, 0, 0);
   const end = new Date(year, month, 0, 23, 59, 59, 999);
 
-  const q = query(expensesCol, where('date', '>=', start), where('date', '<=', end));
+  const q = query(
+    expensesCol,
+    where('date', '>=', start),
+    where('date', '<=', end),
+    orderBy('date', 'desc'),
+  );
   const expenseSnapshot = await getDocs(q);
 
-  const expenseList = expenseSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+  const expenseList: Expense[] = expenseSnapshot.docs.map((doc) => {
+    const data = doc.data();
 
-  console.log('Your expenses:', expenseList);
+    return {
+      id: doc.id,
+      ...data,
+      amount: data.amount || 0,
+      date: data.date ? new Date(data.date.seconds * 1000) : undefined,
+      description: data.description || '',
+    } as Expense;
+  });
+
   return expenseList;
 };

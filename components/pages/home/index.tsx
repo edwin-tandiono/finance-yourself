@@ -7,11 +7,17 @@ import {
   getExpenses,
 } from 'services/firebase';
 
+import ExpenseList from './expense/list';
+
+import type { Expense } from 'types/models/expense';
+
+
 export default function HomePage() {
   const navigate = useNavigate();
 
   const [authenticated, setAuthenticated] = useState(false);
   const [month, setMonth] = useState(new Date());
+  const [expenses, setExpenses] = useState<Expense[]>([]);
 
   // On mount
   useEffect(() => {
@@ -24,14 +30,15 @@ export default function HomePage() {
   // On authenticated & month changed
   useEffect(() => {
     if (authenticated) {
-      getExpenses(month);
+      setExpenses([]);
+      getExpenses(month).then(setExpenses);
     }
   }, [authenticated, month]);
 
   return (
     <div>
       <Navbar month={month} onChangeMonth={setMonth} />
-      <h1>Homepage</h1>
+      <ExpenseList data={expenses} />
     </div>
   ); 
 }
