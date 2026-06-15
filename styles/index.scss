@@ -1,0 +1,23 @@
+@use 'styles/mixins';
+
+body {
+  font-size: 14px;
+  margin: 0;
+  position: relative;
+
+  @include mixins.desktop {
+    font-size: 16px;
+  }
+
+  * {
+    font-family: "DM Mono", sans-serif;
+    font-size: 1rem;
+  }
+}
+
+.text-button {
+  background: none;
+  border: 0;
+  color: inherit;
+  font-size: inherit;
+}

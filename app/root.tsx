@@ -8,7 +8,8 @@ import {
 } from 'react-router';
 
 import type { Route } from './+types/root';
-import './app.css';
+
+import 'styles/index.scss';
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -18,6 +19,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <meta content="width=device-width, initial-scale=1" name="viewport" />
         <meta content="Finance Yourself" name="title" />
         <meta content="You should finance yourself NOW" name="description" />
+
+        <link href="https://fonts.googleapis.com" rel="preconnect"/>
+        <link crossOrigin="anonymous" href="https://fonts.gstatic.com" rel="preconnect" />
+        <link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Jost:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet" />
+
         <Meta />
         <Links />
       </head>
