@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import styles from 'components/pages/home/HomePage.module.scss';
 import { format, isSameDay } from 'utils/date';
 
-import type { Expense } from 'types/models/expense';
+import type { CreateExpensePayload, Expense } from 'types/models/expense';
 
 const DEFAULT_FORM = {
   amount: 0,
@@ -22,13 +22,15 @@ const CATEGORY_OPTIONS = [
 ];
 
 export default function ExpenseForm ({
-  prefill,
-  open,
   onClose,
+  onSubmit,
+  open,
+  prefill,
 }: {
-  prefill?: Expense,
-  open: boolean,
   onClose: () => void,
+  onSubmit: (expense: Expense | CreateExpensePayload) => void,
+  open: boolean,
+  prefill?: Expense,
 }) {
   const initRef = useRef<HTMLInputElement | null>(null);
 
@@ -37,6 +39,7 @@ export default function ExpenseForm ({
 
   const canSubmit = (
     form.amount > 0
+    && form.category
     && form.date
   );
 
@@ -71,6 +74,12 @@ export default function ExpenseForm ({
     if (!canSubmit) {
       return;
     }
+
+    onSubmit({
+      ...prefill,
+      ...form,
+      amount: Number(form.amount),
+    });
   };
 
   useEffect(() => {

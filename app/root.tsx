@@ -7,6 +7,8 @@ import {
   ScrollRestoration,
 } from 'react-router';
 
+import Loader from 'components/common/loader';
+
 import type { Route } from './+types/root';
 
 import 'styles/index.scss';
@@ -31,6 +33,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         {children}
         <ScrollRestoration />
         <Scripts />
+        <Loader />
       </body>
     </html>
   );

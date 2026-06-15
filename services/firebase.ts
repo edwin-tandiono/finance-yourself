@@ -7,11 +7,14 @@ import {
   onAuthStateChanged,
 } from 'firebase/auth';
 import {
+  addDoc,
   collection,
   getFirestore,
   getDocs,
   orderBy,
   query,
+  updateDoc,
+  doc,
   where,
 } from 'firebase/firestore';
 
@@ -99,4 +102,17 @@ export const getExpenses = async (date: Date = new Date()): Promise<Expense[]> =
   });
 
   return expenseList;
+};
+
+export const createExpense = async (expense: Omit<Expense, 'id'>): Promise<string> => {
+  const expensesCol = collection(db, 'expenses');
+  const docRef = await addDoc(expensesCol, expense);
+
+  return docRef.id;
+};
+
+export const updateExpense = async (id: string, expense: Omit<Expense, 'id'>): Promise<void> => {
+  const expenseDoc = doc(db, 'expenses', id);
+
+  await updateDoc(expenseDoc, expense);
 };
