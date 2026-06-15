@@ -2,7 +2,9 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router';
 
 import ErrorMessage from 'components/common/error-message';
+import styles from 'components/pages/login/LoginPage.module.scss';
 import { signIn } from 'services/firebase';
+import { hideAppLoader, showAppLoader } from 'utils/loader';
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -11,12 +13,15 @@ export default function LoginPage() {
 
   const handleSignIn = () => {
     setErrorMessage('');
+    showAppLoader();
 
     signIn()
       .then(() => {
         navigate('/', { replace: true });
       })
       .catch((error: unknown) => {
+        hideAppLoader();
+
         if (error instanceof Error) {
           setErrorMessage(error.message);
         } else {
@@ -26,9 +31,9 @@ export default function LoginPage() {
   };
 
   return (
-    <div>
+    <div className={styles['login']}>
       <ErrorMessage>{errorMessage}</ErrorMessage>
-      <button onClick={handleSignIn} type="button">Sign in</button>
+      <button onClick={handleSignIn} type="button">Sign in with Google</button>
     </div>
   );
 };

@@ -1,3 +1,5 @@
+import styles from 'components/common/error-message/ErrorMessage.module.scss';
+
 export default function ErrorMessage({
   children = null,
 }: { children?: React.ReactNode }) {
@@ -5,5 +7,5 @@ export default function ErrorMessage({
     return null;
   }
 
-  return <p>{children}</p>;
+  return <div className={styles['error-message']}>{children}</div>;
 }

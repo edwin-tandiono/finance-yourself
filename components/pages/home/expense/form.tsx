@@ -222,7 +222,7 @@ export default function ExpenseForm ({
       <form onSubmit={handleSubmit}>
         <h1>
           {prefill
-            ? `[${format({ date: prefill.date, format: 'D MMM YYYY' })}] ${prefill.description}`
+            ? `[${format({ date: prefill.date, format: 'D MMM YYYY' })}] ${prefill.description || prefill.category}`
             : 'Add Expense'}
         </h1>
         <label>
