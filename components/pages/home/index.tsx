@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 
+import Navbar from 'components/pages/home/navbar';
 import {
   listenOnAuthStateChanged,
   getExpenses,
@@ -10,6 +11,7 @@ export default function HomePage() {
   const navigate = useNavigate();
 
   const [authenticated, setAuthenticated] = useState(false);
+  const [month, setMonth] = useState(new Date());
 
   // On mount
   useEffect(() => {
@@ -19,12 +21,17 @@ export default function HomePage() {
     });
   }, []);
 
-  // On authenticated
+  // On authenticated & month changed
   useEffect(() => {
     if (authenticated) {
-      getExpenses();
+      getExpenses(month);
     }
-  }, [authenticated]);
+  }, [authenticated, month]);
 
-  return <h1>Homepage</h1>; 
+  return (
+    <div>
+      <Navbar month={month} onChangeMonth={setMonth} />
+      <h1>Homepage</h1>
+    </div>
+  ); 
 }

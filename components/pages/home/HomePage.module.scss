@@ -1,0 +1,29 @@
+@use 'styles/variables';
+@use 'styles/mixins';
+
+.navbar {
+  background: variables.$accent;
+  height: 56px;
+
+  @include mixins.desktop {
+    height: 50px;
+  }
+
+  &__content {  
+    align-items: center;
+    color: white;
+    display: flex;
+    font-size: 1.5rem;
+    height: 100%;
+    justify-content: space-between;
+    text-transform: uppercase;
+
+    @include mixins.limit-desktop;
+
+
+    button {
+      cursor: pointer;
+      width: 4rem;
+    }
+  }
+}

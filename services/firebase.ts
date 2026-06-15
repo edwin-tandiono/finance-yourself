@@ -6,7 +6,18 @@ import {
   signInWithPopup,
   onAuthStateChanged,
 } from 'firebase/auth';
-import { getFirestore, collection, getDocs } from 'firebase/firestore';
+import {
+  getFirestore,
+  collection,
+  getDocs,
+  query,
+  where,
+} from 'firebase/firestore';
+
+import {
+  validateMonth,
+  validateYear,
+} from 'utils/date';
 
 import type { OAuthCredential } from 'firebase/auth';
 
@@ -55,9 +66,18 @@ export const signIn = (): Promise<OAuthCredential | null> => {
     });
 };
 
-export const getExpenses = async () => {
+export const getExpenses = async (date: Date = new Date()) => {
   const expensesCol = collection(db, 'expenses');
-  const expenseSnapshot = await getDocs(expensesCol);
+
+  const month = validateMonth(date.getMonth() + 1);
+  const year = validateYear(date.getFullYear());
+
+  const start = new Date(year, month - 1, 1, 0, 0, 0, 0);
+  const end = new Date(year, month, 0, 23, 59, 59, 999);
+
+  const q = query(expensesCol, where('date', '>=', start), where('date', '<=', end));
+  const expenseSnapshot = await getDocs(q);
+
   const expenseList = expenseSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 
   console.log('Your expenses:', expenseList);

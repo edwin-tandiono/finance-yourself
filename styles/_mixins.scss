@@ -1,0 +1,10 @@
+@mixin desktop {
+  @media (min-width: 576px) {
+    @content;
+  }
+}
+
+@mixin limit-desktop {
+  margin: 0 auto;
+  max-width: 900px;
+}
