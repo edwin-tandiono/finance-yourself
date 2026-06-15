@@ -16,9 +16,7 @@
 
     @include mixins.limit-desktop;
 
-
     button {
-      cursor: pointer;
       width: 4rem;
     }
   }
@@ -35,6 +33,7 @@
     flex: 1;
     overflow: auto;
     padding-bottom: 10px;
+    position: relative;
 
    &__date {
       &__header {
@@ -54,14 +53,18 @@
           width: 100%;
 
           &:hover {
-            background: #{variables.$accent}22;
-            cursor: pointer;
+            background: variables.$accent-secondary;
           }
 
           &__description {
             font-size: 1.1rem;
             text-align: left;
             word-break: break-word;
+
+            small {
+              color: gray;
+              font-size: 0.8rem;
+            }
           }
 
           &__amount {
@@ -74,18 +77,195 @@
         }
       }
     }
+
+    &__add {
+      align-items: center;
+      background: variables.$accent-secondary;
+      border-radius: 50%;
+      color: variables.$accent;
+      font-size: 3rem;
+      display: flex;
+      bottom: 1rem;
+      height: 4rem;
+      justify-content: center;
+      padding: 10px;
+      right: 1rem;
+      position: absolute;
+      width: 4rem;
+    }
   }
 
   &__summary {
     align-items: center;
-    border-top: 2px solid lightgray;
     display: flex;
     font-size: 1.2rem;
     justify-content: space-between;
-    padding: 10px;
+  
+    div:first-child {
+      align-items: center;
+      border-top: 2px solid lightgray;
+      box-sizing: border-box;
+      display: flex;
+      flex: 1;
+      height: 100%;
+      padding: 10px;
+    }
 
-    b {
+    div:last-child {
+      background: variables.$accent;
+      box-sizing: border-box;
+      color: white;
       font-size: 1.5rem;
+      padding: 10px 20px;
+      height: 100%;
+    }
+  }
+}
+
+.expense-form {
+  background: white;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  left: 0;
+  overflow-y: auto;
+  position: fixed;
+  width: 100vw;
+  top: 0;
+
+  form {
+    flex: 1;
+    box-sizing: border-box;
+    overflow: scroll;  
+    padding: 0 20px 10px;
+    width: 100%;
+
+    @include mixins.limit-desktop;
+
+    h1 {
+      border-bottom: 1px solid lightgray;
+      font-size: 1.5rem;
+      padding-bottom: 5px;
+      margin-bottom: 20px;
+    }
+
+    span {
+      background: variables.$accent-secondary;
+      box-sizing: border-box;
+      display: block;
+      margin-bottom: 10px;
+      padding: 5px;
+      width: fit-content;
+    }
+
+    input,
+    textarea {
+      appearance: textfield;
+      border: 0;
+      border-bottom: 1px solid lightgray;
+      box-sizing: border-box;
+      display: block;
+      margin-bottom: 20px;
+      outline: none;
+      padding: 5px;
+      width: 100%;
+
+      &:read-only {
+        pointer-events: none;
+      }
+    }
+  }
+
+  &__calendar {
+    background: variables.$accent-secondary;
+
+    &__slider {
+      align-items: center;
+      background: variables.$accent;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      text-transform: uppercase;
+
+      button {
+        width: 4rem;
+      }
+    }
+
+    &__week {
+      display: flex;
+
+      &__date, button {
+        aspect-ratio: 1 / 1;
+        background: none;
+        border: 0;
+        flex: 1;
+
+        @include mixins.desktop {
+          aspect-ratio: 2 / 1;
+        }
+
+        &:first-child {
+          color: red;
+        }
+
+        &:hover:not(:disabled) {
+          background: variables.$accent-secondary;
+        }
+
+        &--active {
+          background: variables.$accent !important;
+          color: white !important;
+        }
+      }
+    }
+  }
+
+  &__categories {
+    margin-bottom: 20px;
+
+    &__category {
+      border: 2px solid variables.$accent;
+      margin: 0 5px 5px 0;
+      padding: 5px 10px;
+
+      &--active {
+        background: variables.$accent;
+        color: white;
+      }
+    }
+  }
+
+  &__buttons {
+    border-top: 1px solid lightgray;
+    box-sizing: border-box;
+    display: flex;
+    gap: 5px;
+    padding: 10px 20px;
+    width: 100%;
+
+    @include mixins.limit-desktop;
+
+    button {
+      background: variables.$accent;
+      border: 0;
+      color: white;
+      font-size: 1.5rem;
+      padding: 5px 10px;
+      width: 100%;
+
+      &:disabled {
+        cursor: not-allowed;
+        opacity: 0.5;
+      }
+
+      &:first-child {
+        background: variables.$accent-secondary;
+        color: black;
+        min-width: 4rem;
+        width: 10%;
+      }
     }
   }
 }

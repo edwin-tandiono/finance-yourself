@@ -92,6 +92,7 @@ export const getExpenses = async (date: Date = new Date()): Promise<Expense[]> =
       id: doc.id,
       ...data,
       amount: data.amount || 0,
+      category: data.category || '',
       date: data.date ? new Date(data.date.seconds * 1000) : undefined,
       description: data.description || '',
     } as Expense;

@@ -7,6 +7,7 @@ import {
   getExpenses,
 } from 'services/firebase';
 
+import ExpenseForm from './expense/form';
 import ExpenseList from './expense/list';
 
 import type { Expense } from 'types/models/expense';
@@ -18,6 +19,8 @@ export default function HomePage() {
   const [authenticated, setAuthenticated] = useState(false);
   const [month, setMonth] = useState(new Date());
   const [expenses, setExpenses] = useState<Expense[]>([]);
+  const [currentOpenExpense, setCurrentOpenExpense] = useState<Expense|undefined>();
+  const [expenseFormOpen, setExpenseFormOpen] = useState<boolean>(false);
 
   // On mount
   useEffect(() => {
@@ -38,7 +41,22 @@ export default function HomePage() {
   return (
     <div>
       <Navbar month={month} onChangeMonth={setMonth} />
-      <ExpenseList data={expenses} />
+      <ExpenseList
+        data={expenses} 
+        onClick={(expense) => {
+          setCurrentOpenExpense(expense);
+          setExpenseFormOpen(true);
+        }}
+        />
+
+      <ExpenseForm
+        onClose={() => {
+          setExpenseFormOpen(false);
+          setCurrentOpenExpense(undefined);
+        }}
+        open={expenseFormOpen}
+        prefill={currentOpenExpense}
+      />
     </div>
   ); 
 }
