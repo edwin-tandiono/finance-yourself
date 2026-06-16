@@ -54,7 +54,9 @@
           width: 100%;
 
           &:hover {
-            background: variables.$accent-secondary;
+            @include mixins.desktop {
+              background: variables.$accent-secondary;
+            }
           }
 
           &__description {
@@ -139,6 +141,9 @@
     padding: 0 10px;
     position: sticky;
     top: 0;
+    width: 100%;
+    
+    @include mixins.limit-desktop;
 
     h1 {
       -webkit-box-orient: vertical;
@@ -153,10 +158,19 @@
     button {
       background: red;
       color: white;
-      padding: 10px;
+      padding: 15px;
       height: 3rem;
       margin: 1rem 0;
       width: 3rem;
+
+      svg {
+        height: 100%;
+        width: 100%;
+
+        path {
+          fill: white;
+        }
+      }
     }
   }
 
@@ -191,14 +205,25 @@
       }
     }
   }
+  
+  &__categories {
+    margin-bottom: 20px;
+
+    &__category {
+      border: 1px solid lightgray;
+      margin: 0 5px 5px 0;
+      padding: 5px 10px;
+
+      &--active {
+        background: lightgray;
+      }
+    }
+  }
 
   &__calendar {
-    border: 1px solid variables.$accent;
-
     &__slider {
       align-items: center;
-      background: variables.$accent;
-      color: white;
+      border: 1px solid variables.$accent-secondary;
       display: flex;
       justify-content: space-between;
       text-transform: uppercase;
@@ -208,46 +233,54 @@
       }
     }
 
-    &__week {
-      display: flex;
+    &__month {
+      border: 1px solid variables.$accent-secondary;
+      border-top: 0;
 
-      &__date, button {
-        aspect-ratio: 1 / 1;
-        background: none;
-        border: 0;
-        flex: 1;
+      &__day {
+        display: flex;
+        width: 100%;
 
-        @include mixins.desktop {
-          aspect-ratio: 2 / 1;
-        }
+        & > div {
+          flex: 1;
+          font-size: 0.6rem;
+          padding: 5px 0;
+          text-align: center;
+          opacity: 0.3;
 
-        &:first-child {
-          color: red;
-        }
-
-        &:hover:not(:disabled) {
-          background: variables.$accent-secondary;
-        }
-
-        &--active {
-          background: variables.$accent !important;
-          color: white !important;
+          &:first-child {
+            color: red;
+          }
         }
       }
-    }
-  }
 
-  &__categories {
-    margin-bottom: 20px;
+      &__week {    
+        display: flex;
 
-    &__category {
-      border: 2px solid variables.$accent;
-      margin: 0 5px 5px 0;
-      padding: 5px 10px;
+        &__date, button {
+          aspect-ratio: 1 / 1;
+          background: none;
+          border: 0;
+          flex: 1;
 
-      &--active {
-        background: variables.$accent;
-        color: white;
+          @include mixins.desktop {
+            aspect-ratio: 2 / 1;
+          }
+
+          &:first-child {
+            color: red;
+          }
+
+          &:hover:not(:disabled) {
+            @include mixins.desktop {
+              background: lightgray;
+            }
+          }
+
+          &--active {
+            background: lightgray !important;
+          }
+        }
       }
     }
   }

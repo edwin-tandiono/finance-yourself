@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 
+import TrashIcon from 'assets/trash.svg?react';
 import styles from 'components/pages/home/HomePage.module.scss';
 import { format, isSameDay } from 'utils/date';
 
@@ -143,10 +144,10 @@ export default function ExpenseForm ({
           <button
             key={date}
             className={`${
-              styles['expense-form__calendar__week__date']
+              styles['expense-form__calendar__month__week__date']
             } ${
               isSameDay(form.date, newDate)
-                ? styles['expense-form__calendar__week__date--active']
+                ? styles['expense-form__calendar__month__week__date--active']
                 : ''
             }`}
             onClick={() => handleChangeCalendar(newDate)}
@@ -206,11 +207,22 @@ export default function ExpenseForm ({
             &#10095;
           </button>
         </div>
-        {calendar.map((week, index) => (
-          <div key={`week-${index}`} className={styles['expense-form__calendar__week']}>
-            {week}
+        <div className={styles['expense-form__calendar__month']}>
+          <div className={styles['expense-form__calendar__month__day']}>
+            <div>SUN</div>
+            <div>MON</div>
+            <div>TUE</div>
+            <div>WED</div>
+            <div>THU</div>
+            <div>FRI</div>
+            <div>SAT</div>
           </div>
-        ))}
+          {calendar.map((week, index) => (
+            <div key={`week-${index}`} className={styles['expense-form__calendar__month__week']}>
+              {week}
+            </div>
+          ))}
+        </div>
       </div>
     );
   };
@@ -235,7 +247,7 @@ export default function ExpenseForm ({
               onClick={() => onDelete(prefill)}
               type="button"
             >
-              &#9003;
+              <TrashIcon />
             </button>
           )}
       </div>
