@@ -112,7 +112,7 @@ export default function HomePage() {
           setCurrentOpenExpense(expense);
           setExpenseFormOpen(true);
         }}
-        />
+      />
 
       <ExpenseForm
         onClose={() => {

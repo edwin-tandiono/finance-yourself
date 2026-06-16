@@ -4,6 +4,9 @@
 .navbar {
   background: variables.$accent;
   height: variables.$navbar-height;
+  position: sticky;
+  top: 0;
+  z-index: 1;
 
   &__content {  
     align-items: center;
@@ -25,13 +28,13 @@
 .expense-list {
   display: flex;
   flex-direction: column;
-  height: calc(100vh - variables.$navbar-height);
+  min-height: calc(100vh - variables.$navbar-height);
 
   @include mixins.limit-desktop;
 
   &__list {
     flex: 1;
-    overflow: auto;
+    // overflow: auto;
     padding-bottom: 10px;
     position: relative;
 
@@ -96,24 +99,24 @@
   }
 
   &__summary {
-    align-items: center;
+    align-items: stretch;
+    background: white;
+    bottom: 0;
     display: flex;
     font-size: 1.2rem;
     justify-content: space-between;
+    position: sticky;
   
     div:first-child {
       align-items: center;
       border-top: 2px solid lightgray;
-      box-sizing: border-box;
       display: flex;
       flex: 1;
-      height: 100%;
       padding: 10px;
     }
 
     div:last-child {
       background: variables.$accent;
-      box-sizing: border-box;
       color: white;
       font-size: 1.5rem;
       padding: 10px 20px;
@@ -124,7 +127,6 @@
 
 .expense-form {
   background: white;
-  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   height: 100vh;
@@ -133,11 +135,10 @@
   position: fixed;
   width: 100vw;
   top: 0;
+  z-index: 1;
 
   form {
     flex: 1;
-    box-sizing: border-box;
-    overflow: scroll;  
     padding: 0 20px 10px;
     width: 100%;
 
@@ -145,7 +146,6 @@
 
     span {
       background: variables.$accent-secondary;
-      box-sizing: border-box;
       display: block;
       font-size: 0.8rem;
       margin-bottom: 10px;
@@ -157,7 +157,6 @@
       appearance: textfield;
       border: 0;
       border-bottom: 1px solid lightgray;
-      box-sizing: border-box;
       display: block;
       margin-bottom: 20px;
       outline: none;
@@ -253,11 +252,13 @@
   }
 
   &__buttons {
+    background: white;
     border-top: 1px solid lightgray;
-    box-sizing: border-box;
+    bottom: 0;
     display: flex;
     gap: 5px;
     padding: 10px 20px;
+    position: sticky;
     width: 100%;
 
     @include mixins.limit-desktop;

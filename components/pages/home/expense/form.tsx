@@ -48,7 +48,7 @@ export default function ExpenseForm ({
   const handleChangeText = (e: { target: { name: string; value: string; type?: string; }; }) => {
     const { name, value, type } = e.target;
 
-    if (type === 'number') {
+    if (type === 'tel') {
       setForm((prevState) => ({
         ...prevState,
         [name]: Number.isNaN(Number(value)) ? 0 : Number(value).toString(),
@@ -247,7 +247,7 @@ export default function ExpenseForm ({
             ref={initRef}
             name="amount"
             onChange={handleChangeText}
-            type="number"
+            type="tel"
             value={form.amount}
           />
         </label>
