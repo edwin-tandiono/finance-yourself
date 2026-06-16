@@ -15,27 +15,36 @@ export default function ExpenseList({
   onClick: (arg0?: Expense) => void;
 }) {
   const [showRecap, setShowRecap] = useState(false);
+  const [categoryFilter, setCategoryFilter] = useState('all');
 
   const dataByDate = useMemo(() => groupByDate({
-    items: data,
+    items: data.filter((item) => {
+      if (categoryFilter === 'all') {
+        return true;
+      }
+
+      return item.category === categoryFilter;
+    }),
     getDate: (data) => data.date || new Date(),
-  }), [data]);
+  }), [data, categoryFilter]);
 
   const amountByCategory = useMemo(() => data.reduce(
     (acc, { category, amount }) => {
       if (category in acc) {
         return {
           ...acc,
+          all: acc.all + amount,
           [category]: acc[category] + amount,
         };
       }
 
       return {
         ...acc,
+        all: acc.all + amount,
         [category]: amount,
       }; 
     },
-    {} as Record<string, number>,
+    { all: 0 } as Record<string, number>,
   ), [data]);
 
   if (data.length === 0) {
@@ -98,10 +107,20 @@ export default function ExpenseList({
   const renderRecap = () => (
     <div className={styles['expense-list__recap']}>
       {Object.keys(amountByCategory).map((category) => (
-        <div key={category} className={styles['expense-list__recap__category']}>
+        <button
+          key={category}
+          className={`text-button ${styles['expense-list__recap__category']} ${
+            category === categoryFilter ? styles['expense-list__recap__category--active'] : ''
+          }`}
+          onClick={() => {
+            setCategoryFilter(category);
+            setShowRecap(false);
+          }}
+          type="button"
+        >
           <p>{category}</p>
           <b>{separateThousand(amountByCategory[category])}</b>
-        </div>
+        </button>
       ))}
     </div>
   );
@@ -120,7 +139,11 @@ export default function ExpenseList({
         >
           <span>{`${data.length} Transaction(s)`}</span>
           <br />
-          {showRecap ? <b>RECAP &#9660;</b> : <b>RECAP &#9650;</b>}
+          <b>
+            {categoryFilter}
+            &nbsp;
+            {showRecap ? <span>&#9660;</span> : <span>&#9650;</span>}
+          </b>
         </button>
 
         <div className={styles['expense-list__summary__total']}>

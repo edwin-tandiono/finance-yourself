@@ -1,0 +1,36 @@
+@use 'styles/variables';
+
+@keyframes spin {
+  to {
+    rotate: 360deg;
+  }
+}
+
+.logo {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  height: 6rem;
+  width: 6rem;
+
+  div:nth-child(1) {
+    background: variables.$accent;
+  }
+
+  div:nth-child(2) {
+    background: variables.$accent-light;
+  }
+
+  div:nth-child(3) {
+    background: variables.$accent-secondary;
+  }
+
+  div:nth-child(4) {
+    background: variables.$accent;
+  }
+
+  &--animated {
+    rotate: 0;
+    animation: spin 2s steps(4) infinite;  
+  }
+}

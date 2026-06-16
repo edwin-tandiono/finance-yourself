@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import styles from 'components/common/loader/Loader.module.scss';
+import Logo from 'components/common/logo';
 
 export default function Loader() {
   const [show, setShow] = useState(false);
@@ -24,7 +25,7 @@ export default function Loader() {
 
   return (
     <div className={styles['loader']}>
-      Loading...
+      <Logo animated/>
     </div>
   );
 };

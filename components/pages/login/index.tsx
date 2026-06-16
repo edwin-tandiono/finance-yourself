@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router';
 
 import ErrorMessage from 'components/common/error-message';
+import Logo from 'components/common/logo';
 import styles from 'components/pages/login/LoginPage.module.scss';
 import { signIn } from 'services/firebase';
 import { hideAppLoader, showAppLoader } from 'utils/loader';
@@ -32,6 +33,7 @@ export default function LoginPage() {
 
   return (
     <div className={styles['login']}>
+      <Logo />
       <ErrorMessage>{errorMessage}</ErrorMessage>
       <button onClick={handleSignIn} type="button">Sign in with Google</button>
     </div>
