@@ -13,13 +13,14 @@ const DEFAULT_FORM = {
   date: new Date(),
 };
 
-const CATEGORY_OPTIONS = [
+const CATEGORY_OPTIONS = [ 
   'food',
   'grocery',
   'utilities',
   'rent',
   'tertier',
   'hedon',
+  'other',
 ];
 
 export default function ExpenseForm ({
@@ -100,6 +101,7 @@ export default function ExpenseForm ({
       }
 
       initRef?.current?.focus?.();
+      window.scrollTo(0, 0);
     }
 
   }, [prefill, open]);

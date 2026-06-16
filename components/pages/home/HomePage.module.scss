@@ -43,7 +43,7 @@
 
   &__list {
     flex: 1;
-    padding-bottom: 10px;
+    padding-bottom: 4rem;
 
    &__date {
       &__header {
@@ -64,7 +64,7 @@
 
           &:hover {
             @include mixins.desktop {
-              background: variables.$accent-secondary;
+              background: variables.$accent-light;
             }
           }
 
@@ -82,11 +82,31 @@
           &__amount {
             align-content: center;
             font-size: 1.4rem;
-            font-weight: 500;
             min-width: 30%;
             text-align: right;
           }
         }
+      }
+    }
+
+    & > center > small {
+      color: lightgray;
+      margin: 1rem;
+    }
+  }
+
+  &__recap {
+    flex: 1;
+
+    &__category {
+      align-items: center;
+      border-bottom: 1px solid lightgray;
+      display: flex;
+      padding: 10px;
+      justify-content: space-between;
+
+      b {
+        font-size: 1.5rem;
       }
     }
   }
@@ -96,21 +116,29 @@
     background: white;
     bottom: 0;
     display: flex;
+    height: variables.$navbar-height;
     font-size: 1.2rem;
     justify-content: space-between;
     position: sticky;
   
     &__detail {
-      align-items: center;
       border-top: 2px solid lightgray;
-      display: flex;
-      flex: 1;
-      padding: 10px;
+      height: 100%;
+      overflow: hidden;
+      padding: 0 10px;
+      text-align: left;
+      width: 100%;
+
+      span {
+        font-size: 0.8rem;
+      }
     }
 
     &__total {
+      align-items: center;
       background: variables.$accent;
       color: white;
+      display: flex;
       font-size: 1.5rem;
       padding: 10px 20px;
       height: 100%;
@@ -128,6 +156,7 @@
       justify-content: center;
       padding: 10px;
       right: 1rem;
+      opacity: 0.8;
       position: absolute;
       transform: translateY(-100%);
       width: 4rem;
@@ -168,6 +197,7 @@
       background: red;
       color: white;
       padding: 15px;
+      flex-shrink: 0;
       height: 3rem;
       margin: 1rem 0;
       width: 3rem;
@@ -185,7 +215,7 @@
 
   form {
     flex: 1;
-    padding: 0 10px 10px;
+    padding: 10px;
     width: 100%;
 
     @include mixins.limit-desktop;
@@ -213,6 +243,10 @@
         pointer-events: none;
       }
     }
+
+    input[name="amount"] {
+      font-size: 2rem;
+    }
   }
   
   &__categories {
@@ -220,6 +254,7 @@
 
     &__category {
       border: 1px solid lightgray;
+      color: variables.$accent;
       margin: 0 5px 5px 0;
       padding: 5px 10px;
 
