@@ -34,9 +34,7 @@
 
   &__list {
     flex: 1;
-    // overflow: auto;
     padding-bottom: 10px;
-    position: relative;
 
    &__date {
       &__header {
@@ -80,22 +78,6 @@
         }
       }
     }
-
-    &__add {
-      align-items: center;
-      background: variables.$accent-secondary;
-      border-radius: 50%;
-      color: variables.$accent;
-      font-size: 3rem;
-      display: flex;
-      bottom: 1rem;
-      height: 4rem;
-      justify-content: center;
-      padding: 10px;
-      right: 1rem;
-      position: absolute;
-      width: 4rem;
-    }
   }
 
   &__summary {
@@ -107,7 +89,7 @@
     justify-content: space-between;
     position: sticky;
   
-    div:first-child {
+    &__detail {
       align-items: center;
       border-top: 2px solid lightgray;
       display: flex;
@@ -115,31 +97,72 @@
       padding: 10px;
     }
 
-    div:last-child {
+    &__total {
       background: variables.$accent;
       color: white;
       font-size: 1.5rem;
       padding: 10px 20px;
       height: 100%;
     }
+
+    &__add {
+      align-items: center;
+      background: variables.$accent-secondary;
+      border-radius: 50%;
+      color: variables.$accent;
+      font-size: 3rem;
+      display: flex;
+      top: -1rem;
+      height: 4rem;
+      justify-content: center;
+      padding: 10px;
+      right: 1rem;
+      position: absolute;
+      transform: translateY(-100%);
+      width: 4rem;
+    }
   }
 }
 
 .expense-form {
-  background: white;
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  left: 0;
-  overflow-y: auto;
-  position: fixed;
-  width: 100vw;
-  top: 0;
-  z-index: 1;
+  min-height: 100vh;
+
+  &__header {
+    background: white;
+    border-bottom: 1px solid lightgray;
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    padding: 0 10px;
+    position: sticky;
+    top: 0;
+
+    h1 {
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+      display: -webkit-box;
+      line-clamp: 2;
+      font-size: 1.5rem;
+      margin: 1rem 0;
+      overflow: hidden;
+    }
+
+    button {
+      background: red;
+      color: white;
+      padding: 10px;
+      height: 3rem;
+      margin: 1rem 0;
+      width: 3rem;
+    }
+  }
 
   form {
     flex: 1;
-    padding: 0 20px 10px;
+    padding: 0 10px 10px;
     width: 100%;
 
     @include mixins.limit-desktop;
@@ -166,28 +189,6 @@
       &:read-only {
         pointer-events: none;
       }
-    }
-  }
-
-  &__header {
-    border-bottom: 1px solid lightgray;
-    display: flex;
-    gap: 10px;
-    justify-content: space-between;
-    margin-bottom: 20px;
-
-    h1 {
-      font-size: 1.5rem;
-      margin: 1rem 0;
-    }
-
-    button {
-      background: red;
-      color: white;
-      padding: 10px;
-      height: 3rem;
-      margin: 1rem 0;
-      width: 3rem;
     }
   }
 
@@ -257,7 +258,7 @@
     bottom: 0;
     display: flex;
     gap: 5px;
-    padding: 10px 20px;
+    padding: 10px;
     position: sticky;
     width: 100%;
 

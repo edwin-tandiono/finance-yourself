@@ -96,34 +96,40 @@ export default function HomePage() {
 
   return (
     <div>
-      <Navbar
-        month={month}
-        onChangeMonth={(newMonth) => {
-          setMonth(newMonth);
-          setExpenses([]);
-        }}
-      />
+      {expenseFormOpen
+        ? (
+          <ExpenseForm
+            onClose={() => {
+              setExpenseFormOpen(false);
+              setCurrentOpenExpense(undefined);
+            }}
+            onDelete={handleDelete}
+            onSubmit={handleUpsert}
+            open={expenseFormOpen}
+            prefill={currentOpenExpense}
+          />
+        )
+        : (
+          <>
+            <Navbar
+              month={month}
+              onChangeMonth={(newMonth) => {
+                setMonth(newMonth);
+                setExpenses([]);
+              }}
+            />
 
-      <ErrorMessage>{errorMessage}</ErrorMessage>
+            <ErrorMessage>{errorMessage}</ErrorMessage>
 
-      <ExpenseList
-        data={expenses} 
-        onClick={(expense) => {
-          setCurrentOpenExpense(expense);
-          setExpenseFormOpen(true);
-        }}
-      />
-
-      <ExpenseForm
-        onClose={() => {
-          setExpenseFormOpen(false);
-          setCurrentOpenExpense(undefined);
-        }}
-        onDelete={handleDelete}
-        onSubmit={handleUpsert}
-        open={expenseFormOpen}
-        prefill={currentOpenExpense}
-      />
+            <ExpenseList
+              data={expenses} 
+              onClick={(expense) => {
+                setCurrentOpenExpense(expense);
+                setExpenseFormOpen(true);
+              }}
+            />
+          </>
+        )}
     </div>
   ); 
 }

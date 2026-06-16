@@ -221,26 +221,26 @@ export default function ExpenseForm ({
 
   return (
     <div className={styles['expense-form']}>
-      <form onSubmit={handleSubmit}>
-        <div className={styles['expense-form__header']}>
-          <h1>
-            {prefill
-              ? `[${format({ date: prefill.date, format: 'D MMM YYYY' })}] ${prefill.description || prefill.category}`
-              : 'Add Expense'}
-          </h1>
-
+       <div className={styles['expense-form__header']}>
+        <h1>
           {prefill
-            && (
-              <button
-                className="text-button"
-                onClick={() => onDelete(prefill)}
-                type="button"
-              >
-                &#9003;
-              </button>
-            )}
-        </div>
+            ? `[${format({ date: prefill.date, format: 'D MMM YYYY' })}] ${prefill.description || prefill.category}`
+            : 'Add Expense'}
+        </h1>
 
+        {prefill
+          && (
+            <button
+              className="text-button"
+              onClick={() => onDelete(prefill)}
+              type="button"
+            >
+              &#9003;
+            </button>
+          )}
+      </div>
+          
+      <form onSubmit={handleSubmit}>
         <label>
           <span>Amount</span>
           <input

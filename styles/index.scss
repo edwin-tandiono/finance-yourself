@@ -17,13 +17,16 @@ body {
   }
 }
 
-button:not(:disabled) {
-  cursor: pointer;
+button {
+  color: inherit;
+  font-size: inherit;
+
+  &:not(:disabled) {
+    cursor: pointer;
+  }
 }
 
 .text-button {
   background: none;
   border: 0;
-  color: inherit;
-  font-size: inherit;
 }

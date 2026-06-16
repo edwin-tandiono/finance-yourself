@@ -63,19 +63,24 @@ export default function ExpenseList({
             </div>
           );
         })}
+      </div>
 
+      <div className={styles['expense-list__summary']}>
+        <div className={styles['expense-list__summary__detail']}>
+          {`${data.length} Transaction(s)`}
+        </div>
+
+        <div className={styles['expense-list__summary__total']}>
+          {separateThousand(data.reduce((acc, { amount }) => acc + (amount || 0), 0))}
+        </div>
+        
         <button
-          className={`text-button ${styles['expense-list__list__add']}`}
+          className={`text-button ${styles['expense-list__summary__add']}`}
           onClick={() => onClick()}
           type="button"
         >
           &#43;
         </button>
-      </div>
-
-      <div className={styles['expense-list__summary']}>
-        <div>{`${data.length} Transaction(s)`}</div>
-        <div>{separateThousand(data.reduce((acc, { amount }) => acc + (amount || 0), 0))}</div>
       </div>
     </div>
   );
