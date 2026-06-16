@@ -32,6 +32,15 @@
 
   @include mixins.limit-desktop;
 
+  &__empty {
+    align-items: center;
+    color: gray;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: center;
+  }
+
   &__list {
     flex: 1;
     padding-bottom: 10px;

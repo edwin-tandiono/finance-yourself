@@ -19,6 +19,14 @@ export default function ExpenseList({
     getDate: (data) => data.date || new Date(),
   }), [data]);
 
+  if (data.length === 0) {
+    return (
+      <div className={styles['expense-list']}>
+        <div className={styles['expense-list__empty']}>No transactions</div>
+      </div>
+    );
+  }
+
   return (
     <div className={styles['expense-list']}>
       <div className={styles['expense-list__list']}>
@@ -73,7 +81,7 @@ export default function ExpenseList({
         <div className={styles['expense-list__summary__total']}>
           {separateThousand(data.reduce((acc, { amount }) => acc + (amount || 0), 0))}
         </div>
-        
+
         <button
           className={`text-button ${styles['expense-list__summary__add']}`}
           onClick={() => onClick()}
