@@ -7,11 +7,19 @@ import styles from 'components/pages/home/HomePage.module.scss';
 import Navbar from 'components/pages/home/navbar';
 import {
   listenOnAuthStateChanged,
-  getExpenses,
-  createExpense,
-  updateExpense,
-  deleteExpense,
+  getExpenses as getExpensesFromFirebase,
+  createExpense as createExpenseToFirebase,
+  updateExpense as updateExpenseToFirebase,
+  deleteExpense as deleteExpenseFromFirebase,
 } from 'services/firebase';
+import {
+  isSignedInAsGuest,
+  getExpenses as getExpensesAsGuest,
+  createExpense as createExpenseAsGuest,
+  updateExpense as updateExpenseAsGuest,
+  deleteExpense as deleteExpenseAsGuest,
+} from 'services/guest';
+import { isSameMonth } from 'utils/date';
 import { hideAppLoader, showAppLoader } from 'utils/loader';
 
 import ExpenseForm from './expense/form';
@@ -24,6 +32,7 @@ export default function HomePage() {
   const navigate = useNavigate();
 
   const [authenticated, setAuthenticated] = useState(false);
+  const [isGuest, setIsGuest] = useState(false);
   const [starting, setStarting] = useState(true);
   const [month, setMonth] = useState(new Date());
   const [expenses, setExpenses] = useState<Expense[]>([]);
@@ -53,6 +62,8 @@ export default function HomePage() {
     setExpenseFormOpen(false);
     setErrorMessage('');
 
+    const getExpenses = isGuest ? getExpensesAsGuest : getExpensesFromFirebase;
+
     getExpenses(month)
       .then(setExpenses)
       .catch(catchError)
@@ -68,15 +79,29 @@ export default function HomePage() {
     setErrorMessage('');
 
     if ('id' in expense) {
+      const updateExpense = isGuest ? updateExpenseAsGuest : updateExpenseToFirebase;
+
       updateExpense(expense.id, expense)
-        .then(() => setMonth(expense.date))
-        .then(handleFetchList)
+        .then(() => {
+          if (isSameMonth(expense.date, month)) {
+            handleFetchList();
+          } else {
+            setMonth(expense.date);
+          }
+        })
         .catch(catchError)
         .finally(hideAppLoader);
     } else {
+      const createExpense = isGuest ? createExpenseAsGuest : createExpenseToFirebase;
+
       createExpense(expense)
-        .then(() => setMonth(expense.date))
-        .then(handleFetchList)
+        .then(() => {
+          if (isSameMonth(expense.date, month)) {
+            handleFetchList();
+          } else {
+            setMonth(expense.date);
+          }
+        })
         .catch(catchError)
         .finally(hideAppLoader);
     }
@@ -85,6 +110,8 @@ export default function HomePage() {
   const handleDelete = (expense: Expense) => {
     showAppLoader();
     setErrorMessage('');
+
+    const deleteExpense = isGuest ? deleteExpenseAsGuest : deleteExpenseFromFirebase;
 
     deleteExpense(expense.id)
       .then(handleFetchList)
@@ -96,7 +123,14 @@ export default function HomePage() {
   useEffect(() => {
     listenOnAuthStateChanged({
       onLoggedIn: () => setAuthenticated(true),
-      onLoggedOut: () => navigate('/login', { replace: true }),
+      onLoggedOut: () => {
+        if (isSignedInAsGuest()) {
+          setAuthenticated(true);
+          setIsGuest(true);
+        } else {
+          navigate('/login', { replace: true });
+        }
+      },
     });
   }, []);
 

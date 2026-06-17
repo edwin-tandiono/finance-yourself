@@ -18,8 +18,11 @@
 }
 
 .sync-indicator {
+  background: white;
   color: lightgray;
   text-align: left;
+  position: sticky;
+  top: variables.$navbar-height;
 }
 
 .navbar {

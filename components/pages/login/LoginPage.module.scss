@@ -1,4 +1,5 @@
 @use 'styles/variables';
+@use 'styles/mixins';
 
 .login {
   align-items: center;
@@ -9,11 +10,48 @@
   justify-content: center;
   width: 100vw;
 
+  @include mixins.limit-desktop;
+
+  h1 {
+    font-size: 2rem;
+    letter-spacing: 0.5rem;
+
+    span {
+      border: 1rem solid transparent;
+      border-bottom: 1rem solid variables.$accent-secondary;;
+      border-left: 1rem solid variables.$accent;
+      display: inline-block;
+      height: 0;
+      line-height: 1.5;
+      margin-left: 5px;
+      width: 0;
+    }
+  }
+
+  p {
+    color: gray;
+  }
+
   button {
     background-color: variables.$accent;
     border: 0;
     color: white;
     font-size: 1.5rem;
     padding: 10px;
+
+    &:last-of-type {
+      background: none;
+      color: variables.$accent;
+      font-size: 1.2rem;
+      margin-top: 20px;
+    }
+  }
+
+  a {
+    bottom: -0.5rem;
+    height: 4rem;
+    opacity: 0.5;
+    position: fixed;
+    width: 4rem;
   }
 }

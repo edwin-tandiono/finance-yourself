@@ -98,9 +98,9 @@ export default function ExpenseForm ({
         setCurrentCalendar(prefill.date);
       } else {
         setForm(DEFAULT_FORM);
+        initRef?.current?.focus?.();
       }
 
-      initRef?.current?.focus?.();
       window.scrollTo(0, 0);
     }
 
