@@ -79,11 +79,17 @@ export default function ExpenseForm ({
       return;
     }
 
-    onSubmit({
+    const submitPayload = {
       ...prefill,
       ...form,
       amount: Number(form.amount),
-    });
+    };
+
+    if (!submitPayload.id) {
+      delete submitPayload.id;
+    }
+
+    onSubmit(submitPayload);
   };
 
   useEffect(() => {
@@ -120,6 +126,7 @@ export default function ExpenseForm ({
 
       window.scrollTo(0, 0);
     } else {
+      setForm(DEFAULT_FORM);
       document.removeEventListener('keydown', focusInputAmount);
     }
 

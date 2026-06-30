@@ -90,7 +90,11 @@ export default function HomePage() {
           }
         })
         .catch(catchError)
-        .finally(hideAppLoader);
+        .finally(() => {
+          hideAppLoader();
+          setCurrentOpenExpense(undefined);
+          setExpenseFormOpen(false);
+        });
     } else {
       const createExpense = isGuest ? createExpenseAsGuest : createExpenseToFirebase;
 
@@ -103,7 +107,11 @@ export default function HomePage() {
           }
         })
         .catch(catchError)
-        .finally(hideAppLoader);
+        .finally(() => {
+          hideAppLoader();
+          setCurrentOpenExpense(undefined);
+          setExpenseFormOpen(false);
+        });
     }
   };
 
