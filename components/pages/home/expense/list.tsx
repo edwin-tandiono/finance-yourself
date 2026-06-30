@@ -28,23 +28,40 @@ export default function ExpenseList({
     getDate: (data) => data.date || new Date(),
   }), [data, categoryFilter]);
 
-  const amountByCategory = useMemo(() => data.reduce(
+  const { amountByCategory, countByCategory } = useMemo(() => data.reduce(
     (acc, { category, amount }) => {
-      if (category in acc) {
+      if (category in acc.amountByCategory) {
         return {
-          ...acc,
-          all: acc.all + amount,
-          [category]: acc[category] + amount,
+          amountByCategory: {
+            ...acc.amountByCategory,
+            all: acc.amountByCategory.all + amount,
+            [category]: acc.amountByCategory[category] + amount,
+          },
+          countByCategory: {
+            ...acc.countByCategory,
+            all: acc.countByCategory.all + 1,
+            [category]: acc.countByCategory[category] + 1,
+          },
         };
       }
 
       return {
-        ...acc,
-        all: acc.all + amount,
-        [category]: amount,
-      }; 
+        amountByCategory: {
+          ...acc.amountByCategory,
+          all: acc.amountByCategory.all + amount,
+          [category]: amount,
+        },
+        countByCategory: {
+          ...acc.countByCategory,
+          all: acc.countByCategory.all + 1,
+          [category]: 1,
+        },
+      };
     },
-    { all: 0 } as Record<string, number>,
+    {
+      amountByCategory: { all: 0 },
+      countByCategory: { all: 0 },
+    } as { amountByCategory: Record<string, number>, countByCategory: Record<string, number> },
   ), [data]);
 
   if (data.length === 0) {
@@ -62,9 +79,18 @@ export default function ExpenseList({
 
         return (
           <div key={date} className={styles['expense-list__list__date']}>
-            <center className={styles['expense-list__list__date__header']}>
+            <button
+              className={`text-button ${styles['expense-list__list__date__header']}`}
+              onClick={() => onClick({
+                id: '',
+                amount: 0,
+                category: '',
+                description: '',
+                date: new Date(data[0].date),
+              })}
+            >
               {format({ date: data[0].date, format: 'D MMM YYYY' })}
-            </center>
+            </button>
           
             <div className={styles['expense-list__list__date__data']}>
               {data.map((expense) => {
@@ -137,7 +163,7 @@ export default function ExpenseList({
           onClick={() => setShowRecap((prevState) => !prevState)}
           type="button"
         >
-          <span>{`${data.length} Transaction(s)`}</span>
+          <span>{`${countByCategory[categoryFilter]} Transaction(s)`}</span>
           <br />
           <b>
             {categoryFilter}
@@ -147,7 +173,7 @@ export default function ExpenseList({
         </button>
 
         <div className={styles['expense-list__summary__total']}>
-          {separateThousand(data.reduce((acc, { amount }) => acc + (amount || 0), 0))}
+          {separateThousand(amountByCategory[categoryFilter] || 0)}
         </div>
 
         <button

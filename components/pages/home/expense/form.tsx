@@ -87,23 +87,45 @@ export default function ExpenseForm ({
   };
 
   useEffect(() => {
+    const focusInputAmount = (e: KeyboardEvent) => {
+      const isNumberKey = /^\d$/.test(e.key) || /^Numpad\d$/.test(e.code);
+
+      if (!isNumberKey || document.activeElement === initRef.current) {
+        return;
+      }
+
+      e.preventDefault();
+
+      setForm((prevState) => ({ ...prevState, amount: Number(e.key) }));
+      initRef.current?.focus();
+    };
+
+
     if (open) {
+      document.addEventListener('keydown', focusInputAmount);
+
       if (prefill) {
-        setForm({
-          amount: prefill.amount,
-          category: prefill.category,
-          description: prefill.description,
-          date: prefill.date,
-        });
-        setCurrentCalendar(prefill.date);
+        setForm((prevState) => ({
+          amount: prefill.amount || prevState.amount,
+          category: prefill.category || prevState.category,
+          description: prefill.description || prevState.description,
+          date: prefill.date || prevState.date,
+        }));
+        setCurrentCalendar(prefill.date || form.date);
+
       } else {
         setForm(DEFAULT_FORM);
         initRef?.current?.focus?.();
       }
 
       window.scrollTo(0, 0);
+    } else {
+      document.removeEventListener('keydown', focusInputAmount);
     }
 
+    return () => {
+      document.removeEventListener('keydown', focusInputAmount);
+    };
   }, [prefill, open]);
 
   const renderCalendar = (): React.ReactNode => {
@@ -237,12 +259,12 @@ export default function ExpenseForm ({
     <div className={styles['expense-form']}>
        <div className={styles['expense-form__header']}>
         <h1>
-          {prefill
+          {prefill?.id
             ? `[${format({ date: prefill.date, format: 'D MMM YYYY' })}] ${prefill.description || prefill.category}`
             : 'Add Expense'}
         </h1>
 
-        {prefill
+        {prefill?.id
           && (
             <button
               className="text-button"

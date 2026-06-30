@@ -73,6 +73,11 @@
       &__header {
         background: lightgray;
         padding: 5px 10px;
+        width: 100%;
+
+        &:hover {
+          background: variables.$accent-light;
+        }
       }
 
       &__data {
