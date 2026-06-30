@@ -19,7 +19,7 @@ import {
   updateExpense as updateExpenseAsGuest,
   deleteExpense as deleteExpenseAsGuest,
 } from 'services/guest';
-import { isSameMonth } from 'utils/date';
+import { isSameMonth, getDateId } from 'utils/date';
 import { hideAppLoader, showAppLoader } from 'utils/loader';
 
 import ExpenseForm from './expense/form';
@@ -164,6 +164,9 @@ export default function HomePage() {
           onClose={() => {
             setExpenseFormOpen(false);
             setCurrentOpenExpense(undefined);
+            setTimeout(() => {
+              document.getElementById(getDateId(currentOpenExpense?.date || new Date()))?.scrollIntoView({ block: 'center' });
+            }, 0);
           }}
           onDelete={handleDelete}
           onSubmit={handleUpsert}

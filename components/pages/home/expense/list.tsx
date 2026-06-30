@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 
 import styles from 'components/pages/home/HomePage.module.scss';
-import { format, groupByDate } from 'utils/date';
+import { format, getDateId, groupByDate } from 'utils/date';
 import { separateThousand } from 'utils/number';
 
 
@@ -81,6 +81,7 @@ export default function ExpenseList({
           <div key={date} className={styles['expense-list__list__date']}>
             <button
               className={`text-button ${styles['expense-list__list__date__header']}`}
+              id={getDateId(data[0].date)}
               onClick={() => onClick({
                 id: '',
                 amount: 0,
