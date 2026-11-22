@@ -4,7 +4,8 @@
   "description": "Cloud Run webhook that parses expense emails with Gemini and writes expenses to Firestore",
   "main": "index.js",
   "scripts": {
-    "start": "node --env-file=.env index.js"
+    "dev": "node --env-file=.env index.js",
+    "start": "node index.js"
   },
   "dependencies": {
     "@google/genai": "^1.0.0",
