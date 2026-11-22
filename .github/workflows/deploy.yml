@@ -8,6 +8,7 @@ on:
     branches: ['master']
     paths-ignore:
       - "webhook/**"
+      - ".github/workflows/deploy-webhook.yml"
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
