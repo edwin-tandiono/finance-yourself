@@ -1,0 +1,49 @@
+name: Deploy Email Expense Webhook
+
+on:
+  push:
+    branches: ["master"]
+    paths:
+      - "webhook/**"
+      - ".github/workflows/deploy-webhook.yml"
+  workflow_dispatch:
+
+env:
+  PROJECT_ID: "251500743159"
+  REGION: "asia-southeast2"
+  SERVICE_NAME: "expense-email-webhook"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.WEBHOOK_GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.WEBHOOK_GCP_DEPLOYER_SA }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Deploy webhook folder to Cloud Run
+        run: |
+          gcloud run deploy "${{ env.SERVICE_NAME }}" \
+            --source ./webhook \
+            --region "${{ env.REGION }}" \
+            --project "${{ env.PROJECT_ID }}" \
+            --service-account "${{ secrets.WEBHOOK_GCP_RUNTIME_SA }}" \
+            --allow-unauthenticated \
+            --min-instances=0 \
+            --max-instances=1 \
+            --memory=256Mi \
+            --cpu=1 \
+            --timeout=30s \
+            --set-env-vars="WEBHOOK_SECRET=${{ secrets.WEBHOOK_SECRET }},GEMINI_API_KEY=${{ secrets.WEBHOOK_GEMINI_API_KEY }},GCP_PROJECT=${{ env.PROJECT_ID }},GEMINI_MODEL=${{ vars.WEBHOOK_GEMINI_MODEL }}"
