@@ -12,6 +12,7 @@ env:
   PROJECT_ID: "finance-yourself"
   REGION: "asia-southeast2"
   SERVICE_NAME: "expense-email-webhook"
+  STAGE_BUCKET: "finance-yourself-run-sources-asia-southeast2"
 
 jobs:
   deploy:
@@ -37,6 +38,7 @@ jobs:
         run: |
           gcloud run deploy "${{ env.SERVICE_NAME }}" \
             --source ./webhook \
+            --stage-bucket "${{ env.STAGE_BUCKET }}" \
             --region "${{ env.REGION }}" \
             --project "${{ env.PROJECT_ID }}" \
             --service-account "${{ secrets.WEBHOOK_GCP_RUNTIME_SA }}" \
