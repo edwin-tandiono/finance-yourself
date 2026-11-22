@@ -113,23 +113,9 @@ app.post("/webhook/email", async (req, res) => {
       return res.status(401).json({ error: "Unauthorized" });
     }
 
-    const { messageId, from, subject, date, body } = req.body || {};
+    const { from, subject, date, body } = req.body || {};
     if (!body && !subject) {
       return res.status(400).json({ error: "Missing email subject or body" });
-    }
-
-    const dedupKey = messageId
-      ? `email_${String(messageId).replace(/[^a-zA-Z0-9_-]/g, "_")}`
-      : `hash_${crypto
-          .createHash("sha256")
-          .update(`${from}|${subject}|${date}|${body}`)
-          .digest("hex")
-          .slice(0, 28)}`;
-
-    const docRef = db.collection("transactions").doc(dedupKey);
-    const existing = await docRef.get();
-    if (existing.exists) {
-      return res.status(200).json({ status: "duplicate_skipped", id: dedupKey });
     }
 
     const extracted = await extractTransactionWithGemini({ from, subject, date, body });
@@ -151,13 +137,13 @@ app.post("/webhook/email", async (req, res) => {
       description: (extracted.description || "").trim(),
     };
 
-    await docRef.set(expensePayload);
+    const docRef = await db.collection("expenses").add(expensePayload);
 
     return res.status(200).json({
       status: "created",
-      id: dedupKey,
+      id: docRef.id,
       expense: {
-        id: dedupKey,
+        id: docRef.id,
         ...expensePayload,
         date: expensePayload.date.toISOString(),
       },
