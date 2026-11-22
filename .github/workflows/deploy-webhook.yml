@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
 
 env:
-  PROJECT_ID: "251500743159"
+  PROJECT_ID: "finance-yourself"
   REGION: "asia-southeast2"
   SERVICE_NAME: "expense-email-webhook"
 
